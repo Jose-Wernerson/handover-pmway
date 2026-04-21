@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Handover Técnico — PMWAY</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --surface: #141720;
+    --border: #1e2330;
+    --accent: #f97316;
+    --accent2: #3b82f6;
+    --accent3: #22c55e;
+    --danger: #ef4444;
+    --warn: #eab308;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --code-bg: #0a0c10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ---- HEADER ---- */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  .logo span { color: var(--accent); font-weight: 700; }
+  .badge {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid;
+    letter-spacing: 0.06em;
+  }
+  .badge-orange { border-color: var(--accent); color: var(--accent); }
+  .badge-blue { border-color: var(--accent2); color: var(--accent2); }
+
+  /* ---- HERO ---- */
+  .hero {
+    padding: 60px 40px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+  h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  h1 em { color: var(--accent); font-style: normal; }
+  .hero-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 40px;
+  }
+
+  /* ---- INCIDENT BOX ---- */
+  .incident {
+    background: linear-gradient(135deg, #1a0a0a, #1a0808);
+    border: 1px solid #3f1515;
+    border-left: 4px solid var(--danger);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 48px;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .incident-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--danger);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .incident p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #fca5a5;
+  }
+  .incident strong { color: #fff; }
+
+  /* ---- MAIN GRID ---- */
+  .main { max-width: 1100px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* ---- SECTION ---- */
+  .section {
+    margin-bottom: 48px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    width: 24px;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .section-tag {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .tag-red { border-color: var(--danger); color: var(--danger); }
+  .tag-blue { border-color: var(--accent2); color: var(--accent2); }
+  .tag-green { border-color: var(--accent3); color: var(--accent3); }
+  .tag-orange { border-color: var(--accent); color: var(--accent); }
+  .tag-yellow { border-color: var(--warn); color: var(--warn); }
+
+  .section-body { padding: 28px; }
+
+  /* ---- ITEMS ---- */
+  .item-list { display: flex; flex-direction: column; gap: 12px; }
+  .item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .item:hover { border-color: var(--border); }
+  .item-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .icon-red { background: rgba(239,68,68,0.15); }
+  .icon-blue { background: rgba(59,130,246,0.15); }
+  .icon-green { background: rgba(34,197,94,0.15); }
+  .icon-orange { background: rgba(249,115,22,0.15); }
+  .icon-yellow { background: rgba(234,179,8,0.15); }
+
+  .item-content {}
+  .item-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #fff;
+  }
+  .item-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .item-desc strong { color: var(--text); }
+
+  /* ---- CODE BLOCK ---- */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 16px 0;
+    overflow-x: auto;
+  }
+  .code-block .comment { color: #4a5568; }
+  .code-block .keyword { color: #f97316; }
+  .code-block .string { color: #22c55e; }
+  .code-block .fn { color: #3b82f6; }
+  .code-block .warn-line { color: var(--danger); }
+  .code-block .good-line { color: var(--accent3); }
+
+  /* ---- FLOW DIAGRAM ---- */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    gap: 4px;
+  }
+  .flow-node {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 80px;
+  }
+  .flow-arrow {
+    color: var(--muted);
+    font-size: 16px;
+    padding: 0 2px;
+  }
+  .node-blue { background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; }
+  .node-orange { background: rgba(249,115,22,0.2); border: 1px solid rgba(249,115,22,0.4); color: #fdba74; }
+  .node-green { background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.4); color: #86efac; }
+  .node-red { background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.4); color: #fca5a5; }
+  .node-purple { background: rgba(168,85,247,0.2); border: 1px solid rgba(168,85,247,0.4); color: #d8b4fe; }
+
+  /* ---- TWO COLS ---- */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  .col-card {
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid;
+  }
+  .col-bad { border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.05); }
+  .col-good { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.05); }
+  .col-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .col-bad .col-label { color: var(--danger); }
+  .col-good .col-label { color: var(--accent3); }
+  .col-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .col-card li { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--muted); padding-left: 14px; position: relative; line-height: 1.5; }
+  .col-bad li::before { content: '✗'; position: absolute; left: 0; color: var(--danger); }
+  .col-good li::before { content: '✓'; position: absolute; left: 0; color: var(--accent3); }
+
+  /* ---- TEST TABLE ---- */
+  .test-table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: 'JetBrains Mono', monospace; margin-top: 16px; }
+  .test-table th { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .test-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; line-height: 1.5; }
+  .test-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .pass { color: var(--accent3); font-weight: 700; }
+  .fail { color: var(--danger); font-weight: 700; }
+
+  /* ---- JIRA CARD ---- */
+  .jira-card {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .jira-field { margin-bottom: 10px; }
+  .jira-label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 2px; }
+  .jira-val { color: var(--text); }
+  .jira-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .jira-section-title { color: var(--accent2); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .jira-list { list-style: none; }
+  .jira-list li { color: var(--muted); padding-left: 14px; position: relative; }
+  .jira-list li::before { content: '-'; position: absolute; left: 0; color: var(--accent2); }
+
+  /* ---- FOOTER ---- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface);
+  }
+
+  /* ---- VERDICT BANNER ---- */
+  .verdict {
+    background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(59,130,246,0.08));
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .verdict-icon { font-size: 24px; }
+  .verdict-text { font-size: 13px; color: var(--text); line-height: 1.7; }
+  .verdict-text strong { color: var(--accent3); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">// <span>PMWAY</span> — Handover Técnico</div>
+  <div style="display:flex;gap:8px;">
+    <span class="badge badge-orange">BUG: Gateway Timeout 504</span>
+    <span class="badge badge-blue">LIVE PRESENTATION</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Vídeo Handover — Diretor de Tecnologia</div>
+  <h1>Timeout na<br>Edge Function<br>do <em>Supabase</em></h1>
+  <div class="hero-sub">// React + Supabase + Open Finance API · Análise · Solução · QA · Governança</div>
+</div>
+
+<!-- INCIDENT -->
+<div class="incident" style="margin:0 40px 48px; max-width:none;">
+  <div class="incident-label">🔴 Incidente Reportado</div>
+  <p><strong>Diretor de Vendas:</strong> "Estou tentando gerar o relatório de vendas diárias do cliente X, mas a tela fica em 'loading' infinito e nada acontece."<br>
+  <strong>Root cause identificado:</strong> Edge Function no Supabase retornando <strong>HTTP 504 Gateway Timeout</strong> ao tentar comunicar com a API do Open Finance do cliente.</p>
+</div>
+
+<div class="main">
+
+  <!-- ====== SEÇÃO 1 — ANÁLISE CRÍTICA ====== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Análise Crítica — Por que o setInterval é perigoso?</span>
+      <span class="section-tag tag-red">⚠ ANTI-PATTERN</span>
+    </div>
+    <div class="section-body">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Sugestão do Júnior: polling a cada 2s no frontend até a API responder.</p>
+
+      <div class="two-col">
+        <div class="col-card col-bad">
+          <div class="col-label">❌ O que acontece na prática</div>
+          <ul>
+            <li>Cada usuário abre N conexões simultâneas à Edge Function</li>
+            <li>Edge Functions têm cold-start e limite de invocações/minuto</li>
+            <li>Com 50 usuários × 30 chamadas/min = 1.500 req/min → throttle / ban</li>
+            <li>Se a API de Open Finance estiver lenta, o problema se amplifica</li>
+            <li>Race conditions: 2 respostas chegam fora de ordem</li>
+            <li>Usuário fecha a aba → interval continua rodando (memory leak)</li>
+            <li>Sem backoff → DDoS acidental na API de terceiro</li>
+            <li>UX péssima: spinner eterno, sem feedback de progresso</li>
+          </ul>
+        </div>
+        <div class="col-card col-good">
+          <div class="col-label">✅ O que queremos alcançar</div>
+          <ul>
+            <li>Fluxo assíncrono: dispara e libera o usuário</li>
+            <li>Feedback de progresso real (não spinner cego)</li>
+            <li>Retries com backoff exponencial no lado servidor</li>
+            <li>Idempotência: mesma requisição não duplica dados</li>
+            <li>Custo de infra previsível e controlado</li>
+            <li>Observabilidade: log de cada tentativa</li>
+            <li>Resiliência: circuit breaker se a API cair</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="code-block" style="margin-top:20px;">
+<span class="comment">// ❌ Sugestão do Júnior — o que NÃO fazer</span>
+<span class="warn-line">const interval = setInterval(async () => {</span>
+<span class="warn-line">  const res = await supabase.functions.invoke('gerar-relatorio', { body: { clienteId } });</span>
+<span class="warn-line">  if (res.data?.done) clearInterval(interval);</span>
+<span class="warn-line">}, 2000); <span class="comment">// dispara a cada 2s SEM LIMITE, SEM BACKOFF, SEM CLEANUP</span></span>
+      </div>
+
+      <div style="font-size:12px;color:var(--warn);font-family:'JetBrains Mono',monospace;padding:10px 14px;background:rgba(234,179,8,0.05);border:1px solid rgba(234,179,8,0.2);border-radius:6px;">
+        ⚡ Regra de ouro: <strong>nunca deixe o frontend controlar o ritmo de operações de longa duração em APIs de terceiros.</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SEÇÃO 2 — TROUBLESHOOTING ====== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Troubleshooting — Passos para debugar o root cause</span>
+      <span class="section-tag tag-blue">🔍 DEBUG</span>
+    </div>
+    <div class="section-body">
+      <div class="item-list">
+        <div class="item">
+          <div class="item-icon icon-orange">🪵</div>
+          <div class="item-content">
+            <div class="item-title">1. Checar Logs da Edge Function no Supabase Dashboard</div>
+            <div class="item-desc">
+              Dashboard → Edge Functions → Logs.<br>
+              <strong>O que procurar:</strong> tempo de execução, stack trace, mensagem exata do timeout, qual endpoint da Open Finance foi chamado.<br>
+              Confirmar se o 504 é do Supabase ou da API de terceiro (header <code>x-cache</code>, <code>cf-ray</code>).
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-icon icon-blue">⏱️</div>
+          <div class="item-content">
+            <div class="item-title">2. Medir tempo real da chamada à Open Finance API</div>
+            <div class="item-desc">
+              Adicionar <strong>console.time / console.timeEnd</strong> ou timestamp manual antes e depois do fetch.<br>
+              Edge Functions Supabase têm timeout padrão de <strong>~60s</strong>. Se a API demora 70s → 504 garantido.<br>
+              Testar isoladamente via curl/Postman direto na URL da Open Finance para medir latência sem overhead do Supabase.
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-icon icon-red">🌐</div>
+          <div class="item-content">
+            <div class="item-title">3. Verificar rede / firewall / allowlist da Edge Function</div>
+            <div class="item-desc">
+              Edge Functions rodam em ambiente isolado (Deno). Confirmar que o domínio da Open Finance está <strong>liberado no egress</strong>.<br>
+              Alguns providers de Open Finance exigem IP fixo em allowlist — verificar se o IP do Supabase está cadastrado.
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-icon icon-yellow">📊</div>
+          <div class="item-content">
+            <div class="item-title">4. Analisar volume de dados retornado</div>
+            <div class="item-desc">
+              A API pode retornar JSON muito grande (transações do mês inteiro) e o parse está sendo lento.<br>
+              Verificar se existe <strong>paginação</strong> disponível na API e se não estamos buscando tudo de uma vez.
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-icon icon-green">🔁</div>
+          <div class="item-content">
+            <div class="item-title">5. Checar status e SLA da Open Finance API</div>
+            <div class="item-desc">
+              Verificar statuspage do provedor. Confirmar se é problema pontual (fora do ar) ou sistêmico (API lenta por design).<br>
+              <strong>Decisão de arquitetura muda dependendo da resposta.</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SEÇÃO 3 — ARQUITETURA ====== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Arquitetura — Solução correta: Jobs Assíncronos</span>
+      <span class="section-tag tag-orange">⚙ ARCHITECTURE</span>
+    </div>
+    <div class="section-body">
+
+      <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Padrão: <strong>Fire-and-forget + Job Queue + Polling/Realtime via Supabase</strong></p>
+
+      <div class="flow">
+        <div class="flow-node node-blue">React<br><span style="font-size:9px;opacity:0.7;">Frontend</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node node-orange">Edge Fn<br><span style="font-size:9px;opacity:0.7;">Dispatcher</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node node-purple">Jobs Table<br><span style="font-size:9px;opacity:0.7;">Supabase DB</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node node-orange">Worker<br><span style="font-size:9px;opacity:0.7;">Edge Fn / CRON</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node node-red">Open Finance<br><span style="font-size:9px;opacity:0.7;">API Terceira</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node node-green">Realtime<br><span style="font-size:9px;opacity:0.7;">Notify React</span></div>
+      </div>
+
+      <div class="item-list" style="margin-top:20px;">
+        <div class="item">
+          <div class="item-icon icon-blue">1️⃣</div>
+          <div class="item-content">
+            <div class="item-title">Frontend dispara e recebe job_id imediatamente</div>
+            <div class="item-desc">
+              React chama a Edge Function Dispatcher que cria um registro na tabela <code>relatorio_jobs</code> com status <code>'pending'</code> e retorna o <code>job_id</code> em &lt;200ms.<br>
+              UI mostra: <strong>"Seu relatório está sendo gerado, avisaremos quando pronto."</strong> — usuário fica livre.
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-icon icon-orange">2️⃣</div>
+          <div class="item-content">
+            <div class="item-title">Worker processa o job em background (com retries + backoff)</div>
+            <div class="item-desc">
+              Supabase <strong>pg_cron</strong> ou uma 2ª Edge Function processa jobs pendentes.<br>
+              Retry com backoff exponencial: 5s → 15s → 45s → 2min → desiste e marca como <code>'failed'</code>.<br>
+              Timeout do worker configurado para 300s (independente do timeout padrão da Edge Fn de 60s).
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-icon icon-green">3️⃣</div>
+          <div class="item-content">
+            <div class="item-title">Supabase Realtime notifica o React quando pronto</div>
+            <div class="item-desc">
+              React faz subscribe no canal Supabase Realtime para o <code>job_id</code> específico.<br>
+              Quando o worker atualiza status para <code>'done'</code>, o React recebe o evento e exibe o relatório.<br>
+              <strong>Zero polling. Zero setInterval. Zero carga desnecessária.</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block" style="margin-top:20px;">
+<span class="comment">// ✅ Edge Fn: Dispatcher (retorna rápido)</span>
+<span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">async</span> <span class="fn">handler</span>(req) {
+  <span class="keyword">const</span> { clienteId } = <span class="keyword">await</span> req.json();
+  <span class="keyword">const</span> { data: job } = <span class="keyword">await</span> supabase
+    .from(<span class="string">'relatorio_jobs'</span>)
+    .insert({ cliente_id: clienteId, status: <span class="string">'pending'</span> })
+    .select()
+    .single();
+  <span class="good-line">return Response.json({ jobId: job.id }); <span class="comment">// retorna em ~50ms</span></span>
+}
+
+<span class="comment">// ✅ React: subscribe via Realtime (sem polling)</span>
+<span class="keyword">const</span> channel = supabase
+  .channel(<span class="string">`job-${jobId}`</span>)
+  .on(<span class="string">'postgres_changes'</span>, {
+    event: <span class="string">'UPDATE'</span>, schema: <span class="string">'public'</span>, table: <span class="string">'relatorio_jobs'</span>,
+    filter: <span class="string">`id=eq.${jobId}`</span>
+  }, (payload) => {
+    <span class="keyword">if</span> (payload.new.status === <span class="string">'done'</span>) mostrarRelatorio(payload.new.resultado);
+    <span class="keyword">if</span> (payload.new.status === <span class="string">'failed'</span>) mostrarErro();
+  })
+  .subscribe();
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== SEÇÃO 4 — QA / CADERNO DE TESTES ====== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">QA / Homologação — Caderno de Testes</span>
+      <span class="section-tag tag-green">🧪 TESTING</span>
+    </div>
+    <div class="section-body">
+      <table class="test-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Cenário</th>
+            <th>Ação</th>
+            <th>Resultado Esperado</th>
+            <th>Evidência</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--muted)">CT-01</td>
+            <td>Happy path — API rápida</td>
+            <td>Gerar relatório com API respondendo em &lt;5s</td>
+            <td>Job criado, status → done, relatório exibe</td>
+            <td>Screenshot + log do job_id</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted)">CT-02</td>
+            <td>API lenta (90s)</td>
+            <td>Mock da Open Finance com delay de 90s</td>
+            <td>UI não trava. Job processa. Realtime notifica ao final.</td>
+            <td>Vídeo de tela + log de timestamps</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted)">CT-03</td>
+            <td>API indisponível (timeout)</td>
+            <td>Mock retornando 504 sempre</td>
+            <td>Worker faz retry com backoff. Após N tentativas → status 'failed'. UI exibe erro amigável.</td>
+            <td>Log de retries + screenshot da mensagem de erro</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted)">CT-04</td>
+            <td>Usuário fecha aba durante geração</td>
+            <td>Iniciar geração, fechar aba, reabrir</td>
+            <td>Job continua no servidor. Ao reabrir, relatório está disponível (ou mostra progresso).</td>
+            <td>Screenshot do estado ao reabrir</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted)">CT-05</td>
+            <td>Requisição duplicada (duplo clique)</td>
+            <td>Clicar 2x rápido em "Gerar Relatório"</td>
+            <td>Apenas 1 job criado (idempotência). Botão desabilitado após 1º click.</td>
+            <td>Log do DB (1 registro) + screenshot</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted)">CT-06</td>
+            <td>Múltiplos usuários simultâneos</td>
+            <td>5 usuários geram relatório ao mesmo tempo</td>
+            <td>5 jobs independentes processados sem interferência mútua</td>
+            <td>Log com 5 job_ids distintos + timestamps</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted)">CT-07</td>
+            <td>Regression — bug original</td>
+            <td>Reproduzir o cenário original que causou o 504</td>
+            <td>Bug não ocorre mais. Sem loading infinito.</td>
+            <td>Vídeo comparativo (antes vs. depois)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:20px;padding:14px 16px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);">
+        <strong style="color:var(--accent3)">Ferramentas:</strong> Playwright (E2E automático) · Supabase local dev (mocks) · Postman/Bruno (testes de API) · Sentry (monitoramento de erros) · GitHub Actions (CI/CD com testes automáticos em cada PR)
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SEÇÃO 5 — GOVERNANÇA JIRA ====== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">Governança — Documentação da Task no Jira</span>
+      <span class="section-tag tag-yellow">📋 JIRA</span>
+    </div>
+    <div class="section-body">
+      <div class="jira-card">
+        <div class="jira-field">
+          <span class="jira-label">Ticket</span>
+          <span class="jira-val" style="color:var(--accent2)">PMWAY-247 · Bug · Priority: P0 · Story Points: 5</span>
+        </div>
+        <div class="jira-field">
+          <span class="jira-label">Título</span>
+          <span class="jira-val">[BUG] Relatório de Vendas trava em loading infinito — Edge Function 504 Timeout</span>
+        </div>
+        <div class="jira-field">
+          <span class="jira-label">Reporter</span>
+          <span class="jira-val">Diretor de Vendas · Assignee: Dev Sênior</span>
+        </div>
+
+        <div class="jira-section">
+          <div class="jira-section-title">📝 Descrição / Contexto</div>
+          <span class="jira-val">Ao tentar gerar o relatório de vendas diárias do Cliente X, a tela permanece em loading infinito. Investigação revelou que a Edge Function no Supabase retorna 504 ao chamar a API do Open Finance, pois a latência da API terceira excede o timeout da função (60s).</span>
+        </div>
+
+        <div class="jira-section">
+          <div class="jira-section-title">🔍 Root Cause</div>
+          <ul class="jira-list">
+            <li>API Open Finance com latência média de 80-120s (acima do timeout de 60s da Edge Fn)</li>
+            <li>Arquitetura síncrona: React esperava resposta direta da Edge Function</li>
+            <li>Sem mecanismo de retry ou fallback no servidor</li>
+          </ul>
+        </div>
+
+        <div class="jira-section">
+          <div class="jira-section-title">✅ Solução Implementada</div>
+          <ul class="jira-list">
+            <li>Refatoração para arquitetura assíncrona: Job Queue via tabela relatorio_jobs no Supabase</li>
+            <li>Edge Fn Dispatcher retorna job_id em &lt;200ms</li>
+            <li>Worker com retry exponencial processa em background</li>
+            <li>Supabase Realtime notifica o frontend quando o job é concluído</li>
+            <li>Botão com debounce para prevenir jobs duplicados</li>
+          </ul>
+        </div>
+
+        <div class="jira-section">
+          <div class="jira-section-title">📦 PRs Linkados</div>
+          <ul class="jira-list">
+            <li>PR #312 — feat: async job queue para geração de relatórios (branch: fix/relatorio-timeout)</li>
+            <li>PR #313 — test: E2E Playwright para CT-01 a CT-07</li>
+            <li>PR #314 — docs: ADR-005 arquitetura de jobs assíncronos</li>
+          </ul>
+        </div>
+
+        <div class="jira-section">
+          <div class="jira-section-title">🧪 Evidências de QA</div>
+          <ul class="jira-list">
+            <li>Vídeo CT-02: API lenta 90s — UI não travou [loom.com/share/xxx]</li>
+            <li>Vídeo CT-07: Regression — bug não reproduz mais [loom.com/share/yyy]</li>
+            <li>Screenshot CT-03: Mensagem de erro após retries [Jira attachment]</li>
+            <li>Log Supabase: 0 erros 504 nas últimas 24h após deploy [Grafana link]</li>
+          </ul>
+        </div>
+
+        <div class="jira-section">
+          <div class="jira-section-title">📌 Status</div>
+          <span class="jira-val" style="color:var(--accent3)">✅ Done — Deploy em Produção · Monitoramento ativo por 48h</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>// PMWAY — Handover Técnico</span>
+  <span>Edge Function 504 → Async Job Queue</span>
+  <span>Dev Sênior · 2026</span>
+</footer>
+
+</body>
+</html>
